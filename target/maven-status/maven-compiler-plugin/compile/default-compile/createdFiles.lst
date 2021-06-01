@@ -1,0 +1,4 @@
+br\com\uniacademia\cesIC\CesIcApplication.class
+br\com\uniacademia\cesIC\models\RepoInfo.class
+br\com\uniacademia\cesIC\repositors\RepositoryRepoInfo.class
+br\com\uniacademia\cesIC\controllers\ControllerItem.class
