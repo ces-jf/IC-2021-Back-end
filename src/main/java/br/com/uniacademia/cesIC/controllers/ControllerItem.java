@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
@@ -21,13 +20,9 @@ import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
-import br.com.uniacademia.cesIC.dto.UserInfooDTO;
 import br.com.uniacademia.cesIC.models.RepoInfo;
 import br.com.uniacademia.cesIC.models.User;
-import br.com.uniacademia.cesIC.models.UserInfoo;
 import br.com.uniacademia.cesIC.repositors.RepositoryRepoInfo;
-import br.com.uniacademia.cesIC.repositors.RepositoryUser;
-import br.com.uniacademia.cesIC.repositors.RepositoryUserInfoo;
 
 @RestController
 @RequestMapping(value = "/repos")
@@ -36,11 +31,7 @@ public class ControllerItem {
 	@Autowired
 	RepositoryRepoInfo repositoryRepoInfo;
 
-	@Autowired
-	RepositoryUserInfoo repositoryUserInfoo;
 
-	@Autowired
-	RepositoryUser repositoryUser;
 
 	@PostMapping
 	public ResponseEntity<RepoInfo> buscarRepos(@RequestBody ObjectNode obj) {
@@ -98,53 +89,5 @@ public class ControllerItem {
 		return repoInfo;
 	}
 
-	@PostMapping("/UserInfo")
-	public ResponseEntity<UserInfooDTO> buscarUserInfo(@RequestBody ObjectNode nameUser) {
-		ModelMapper mapper = new ModelMapper();
-		UserInfoo userInfoo = new UserInfoo();
-		if (!nameUser.equals(null) && !nameUser.isEmpty()) {
-			String login = nameUser.get("nameUser").asText();
-
-			Optional<UserInfoo> user = repositoryUserInfoo.findByPorLogin(login);
-			if (user.isPresent()) {
-				userInfoo = user.get();
-			}
-
-			String uri = "https://api.github.com/users/{login}";
-			RestTemplate restTemplate = new RestTemplate();
-			Map<String, String> params = new HashMap<String, String>();
-			params.put("login", login);
-			userInfoo = restTemplate.getForObject(uri, UserInfoo.class, params);
-
-			UserInfooDTO userDto = mapper.map(userInfoo, UserInfooDTO.class);
-			repositoryUserInfoo.save(userInfoo);
-			return ResponseEntity.ok(userDto);
-		}
-		return ResponseEntity.badRequest().build();
-	}
-
-	@PostMapping("/User")
-	public Object buscarUser(@RequestBody ObjectNode login) {
-		RestTemplate restTemplate = new RestTemplate();
-		String user = login.get("user").asText();
-		String repo = login.get("repo").asText();
-		List<User> userList = new ArrayList<>();
-
-		boolean buscarUsres = true;
-		int page = 1;
-		while (buscarUsres) {
-			String uri2 = "https://api.github.com/repos/" + user + "/" + repo + "/contributors?per_page=100&page="
-					+ page;
-			ResponseEntity<List<User>> users = restTemplate.exchange(uri2, HttpMethod.GET, null,
-					new ParameterizedTypeReference<List<User>>() {
-					});
-			if (users.getBody().isEmpty())
-				buscarUsres = false;
-			else
-				userList.addAll(users.getBody());
-			page++;
-		}
-		repositoryUser.saveAll(userList);
-		return userList;
-	}
+	
 }
