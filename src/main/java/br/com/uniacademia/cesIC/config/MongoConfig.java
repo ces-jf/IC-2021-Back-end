@@ -10,9 +10,10 @@ import com.mongodb.client.MongoClients;
 public class MongoConfig {
 
 	public @Bean MongoClient mongoClient() {
-		
-		MongoClient mongoClient = MongoClients.create("mongodb://root:root@localhost:27017/test?authSource=admin&authMechanism=SCRAM-SHA-1");
-		
+
+		MongoClient mongoClient = MongoClients
+				.create("mongodb://root:root@localhost:27017/test?authSource=admin&authMechanism=SCRAM-SHA-1");
+
 		return mongoClient;
 	}
 
