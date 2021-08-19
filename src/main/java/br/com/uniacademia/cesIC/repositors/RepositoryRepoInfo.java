@@ -12,5 +12,5 @@ import br.com.uniacademia.cesIC.models.RepoInfo;
 public interface RepositoryRepoInfo extends MongoRepository<RepoInfo, String> {
 
 	@Query("{'name':?0}")
-	public Optional<RepoInfo> findByPorNome(String nome);
+	public Optional<RepoInfo> findByName(String nome);
 }

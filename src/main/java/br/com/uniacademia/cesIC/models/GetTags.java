@@ -27,4 +27,11 @@ public class GetTags implements Serializable{
 	private String tarball_url;
 	private Commit commit;
 	private String node_id;
+	
+	@Override
+	public String toString() {
+		return "GetTags [id=" + id + ", name=" + name + ", zipball_url=" + zipball_url + ", tarball_url=" + tarball_url
+				+ commit.toString() + ", node_id=" + node_id + "]";
+	}
+	
 }

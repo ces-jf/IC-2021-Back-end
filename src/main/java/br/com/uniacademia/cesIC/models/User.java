@@ -38,6 +38,6 @@ public class User implements Serializable {
 	private String events_url;
 	private String received_events_url;
 	private String type;
-	private boolean site_admin;
+	private Boolean site_admin;
 	private Integer contributions;
 }

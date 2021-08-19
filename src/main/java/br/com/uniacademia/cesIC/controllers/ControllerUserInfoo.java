@@ -1,19 +1,26 @@
 package br.com.uniacademia.cesIC.controllers;
 
+import java.util.List;
+
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
-
-import br.com.uniacademia.cesIC.dto.UserInfooDTO;
+import br.com.uniacademia.cesIC.dto.userInfoo.UserInfooDTO;
+import br.com.uniacademia.cesIC.dto.userInfoo.UserInfooHDTO;
+import br.com.uniacademia.cesIC.models.UserInfoo;
+import br.com.uniacademia.cesIC.service.UserService;
 import br.com.uniacademia.cesIC.service.implementation.UserInfooServiceImplementation;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RestController
 @RequestMapping(value = "/userInfo")
 public class ControllerUserInfoo {
@@ -21,21 +28,33 @@ public class ControllerUserInfoo {
 	@Autowired
 	UserInfooServiceImplementation userInfooService;
 
-	@PostMapping("/UserInfo")
-	public ResponseEntity<UserInfooDTO> buscarUserInfoGitHub(@RequestBody ObjectNode nameUser) {
-		if (!nameUser.equals(null) && !nameUser.isEmpty()) {
-			String login = nameUser.get("nameUser").asText();
+	@Autowired
+	UserService userService;
 
-			UserInfooDTO userInfooDTO = userInfooService.buscarUserInfoGitHub(login);
-			userInfooService.save(userInfooDTO);
-			
-			return ResponseEntity.ok(userInfooDTO);
-		}
-		return ResponseEntity.badRequest().build();
+	@PostMapping
+	public ResponseEntity<UserInfooDTO> include(@RequestBody @Valid UserInfooHDTO userInfooHDTO) {
+		log.info("Start - ControllerUserInfoo.include - UserInfooHDTO - {}", userInfooHDTO);
+
+		UserInfooDTO userInfooDTO = userInfooService.buscarUserInfoGitHub(userInfooHDTO.getUser());
+
+		log.info("End - ControllerUserInfoo.include - UserInfooHDTO");
+		return ResponseEntity.ok(userInfooDTO);
 	}
-	
-	@GetMapping("/{login}")
-	public UserInfooDTO buscarUserInfooMongo(@PathVariable String login) {
-		return userInfooService.userInfooToUserInfooDTO(userInfooService.findByLogin(login));
+
+	@GetMapping("/exporta")
+	public void buscar() {
+		List<UserInfoo> userInfos = userInfooService.findAll();
+		if (userInfos != null) {
+			userInfooService.exportCSV(userInfos);
+		}
+	}
+
+	@CrossOrigin(origins = "http://localhost:3000/")
+	@GetMapping()
+	public ResponseEntity<List<UserInfoo>> buscarAll() {
+		List<UserInfoo> userInfos = userInfooService.findAll();
+		if (userInfos != null)
+			return ResponseEntity.ok(userInfos);
+		return ResponseEntity.badRequest().build();
 	}
 }

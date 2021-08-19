@@ -1,4 +1,6 @@
-package br.com.uniacademia.cesIC.dto;
+package br.com.uniacademia.cesIC.dto.userInfoo;
+
+import java.io.Serializable;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,8 +11,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UserInfooDTO {
+public class UserInfooDTO implements Serializable{
 
+	private static final long serialVersionUID = 734252531158824168L;
+	
 	private String login;
 	private String node_id;
 	private String avatar_url;

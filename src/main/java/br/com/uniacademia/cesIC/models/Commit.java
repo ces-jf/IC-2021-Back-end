@@ -11,10 +11,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Commit implements Serializable {
 
-	
 	private static final long serialVersionUID = 2975939668465056463L;
 
 	private String sha;
 	private String url;
-	
+
+	@Override
+	public String toString() {
+		return "Commit [sha=" + sha + ", url=" + url + "]";
+	}
+
 }

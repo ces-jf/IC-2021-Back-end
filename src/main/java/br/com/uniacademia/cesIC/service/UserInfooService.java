@@ -1,15 +1,17 @@
 package br.com.uniacademia.cesIC.service;
 
-import br.com.uniacademia.cesIC.dto.UserInfooDTO;
+import java.util.List;
+
+import br.com.uniacademia.cesIC.dto.userInfoo.UserInfooDTO;
 import br.com.uniacademia.cesIC.models.UserInfoo;
 
 public interface UserInfooService {
 
 	UserInfoo findByLogin(String login);
-
+	
 	void save(UserInfooDTO userInfooDTO);
 
-	UserInfooDTO userInfooToUserInfooDTO(UserInfoo userInfoo);
+	List<UserInfoo> findAll() ;
 
 	UserInfooDTO buscarUserInfoGitHub(String login);
 }
