@@ -49,7 +49,6 @@ public class ControllerUserInfoo {
 		}
 	}
 
-	@CrossOrigin(origins = "http://localhost:3000/")
 	@GetMapping()
 	public ResponseEntity<List<UserInfoo>> buscarAll() {
 		List<UserInfoo> userInfos = userInfooService.findAll();
