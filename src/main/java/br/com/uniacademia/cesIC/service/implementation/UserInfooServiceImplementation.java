@@ -7,6 +7,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.com.uniacademia.cesIC.dto.user.UserFDTO;
 import br.com.uniacademia.cesIC.dto.userInfoo.UserInfooDTO;
 import br.com.uniacademia.cesIC.endpoints.UserInfooEndPoint;
 import br.com.uniacademia.cesIC.exception.user.notFound.UserInfoNotFoundException;
@@ -51,7 +52,11 @@ public class UserInfooServiceImplementation implements UserInfooService {
 	public UserInfooDTO buscarUserInfoGitHub(String login) {
 		log.info("Start - UserInfooServiceImplementation.buscarUserInfoGitHub - Login - {}", login);
 
-		UserInfooDTO userDto = mapper.map(this.userInfooEndPoint.getUserInfoo(login), UserInfooDTO.class);
+		UserFDTO userFDTO = this.userInfooEndPoint.getUserInfoo(login);
+		if (userFDTO.getLogin() == null)
+			throw new UserInfoNotFoundException();
+		
+		UserInfooDTO userDto = mapper.map(userFDTO, UserInfooDTO.class);
 		if (userDto == null) {
 			log.error("Não tem foi encontrado - Login {}", login);
 			throw new UserInfoNotFoundException();
