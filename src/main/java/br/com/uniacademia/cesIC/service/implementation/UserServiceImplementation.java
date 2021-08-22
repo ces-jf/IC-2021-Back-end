@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import br.com.uniacademia.cesIC.dto.user.UserFDTO;
 import br.com.uniacademia.cesIC.dto.user.UserHDTO;
 import br.com.uniacademia.cesIC.endpoints.RepoEndPoint;
-import br.com.uniacademia.cesIC.exception.repo.notFound.RepoNotFoundException;
 import br.com.uniacademia.cesIC.exception.user.notFound.UserInfoNotFoundException;
 import br.com.uniacademia.cesIC.models.RepoInfo;
 import br.com.uniacademia.cesIC.models.User;
@@ -79,7 +78,7 @@ public class UserServiceImplementation implements UserService {
 
 		Optional<RepoInfo> repoInfo = this.repoEndPoint.buscarRepoInfo(userHDTO.getUser(), userHDTO.getRepo());
 		if (!repoInfo.isPresent())
-			throw new RepoNotFoundException();
+			throw new UserInfoNotFoundException();
 		
 		boolean buscarUsres = true;
 		int page = 1;
