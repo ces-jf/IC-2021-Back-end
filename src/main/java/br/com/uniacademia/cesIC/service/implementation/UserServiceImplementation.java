@@ -80,16 +80,12 @@ public class UserServiceImplementation implements UserService {
 		int page = 1;
 		while (buscarUsres) {
 
-			try {
-				List<User> users = this.repoEndPoint.buscarUsers(userHDTO.getUser(), userHDTO.getRepo(), page);
-				if (users.isEmpty())
-					buscarUsres = false;
-				else
-					userList.addAll(users);
-				page++;
-			} catch (Exception e) {
-				throw new RepoNotFoundException();
-			}
+			List<User> users = this.repoEndPoint.buscarUsers(userHDTO.getUser(), userHDTO.getRepo(), page);
+			if (users.isEmpty())
+				buscarUsres = false;
+			else
+				userList.addAll(users);
+			page++;
 		}
 
 		saveAll(userList.stream().collect(Collectors.toList()));

@@ -9,10 +9,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import br.com.uniacademia.cesIC.dto.getTags.GetTagsFDTO;
+import br.com.uniacademia.cesIC.exception.repo.notFound.RepoNotFoundException;
 import br.com.uniacademia.cesIC.models.RepoInfo;
 import br.com.uniacademia.cesIC.models.User;
 
-@FeignClient(value = "repo", url = "https://api.github.com/repos/", decode404 = true)
+@FeignClient(value = "repo", url = "https://api.github.com/repos/", decode404 = true, fallback = RepoNotFoundException.class)
 public interface RepoEndPoint {
 
 	@GetMapping(produces = "application/json", value = "/{user}/{repo}/contributors?per_page=100&page={pages}")
