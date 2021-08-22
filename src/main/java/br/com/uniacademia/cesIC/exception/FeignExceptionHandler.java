@@ -10,6 +10,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import br.com.uniacademia.cesIC.exception.repo.notFound.RepoNotFoundException;
 import br.com.uniacademia.cesIC.exception.user.notFound.UserInfoNotFoundException;
+import br.com.uniacademia.cesIC.exception.userInfo.notFound.UserNotFoundException;
 
 @ControllerAdvice
 public class FeignExceptionHandler extends ResponseEntityExceptionHandler {
@@ -26,6 +27,13 @@ public class FeignExceptionHandler extends ResponseEntityExceptionHandler {
 			HttpServletRequest request) {
 
 		String erro = new UserInfoNotFoundException().getMessage();
+		return new ResponseEntity<>(erro, null, HttpStatus.NOT_FOUND);
+	}
+
+	@ExceptionHandler(UserNotFoundException.class)
+	public ResponseEntity<?> handleResourceNotFoundException(UserNotFoundException rnfe, HttpServletRequest request) {
+
+		String erro = new UserNotFoundException().getMessage();
 		return new ResponseEntity<>(erro, null, HttpStatus.NOT_FOUND);
 	}
 }

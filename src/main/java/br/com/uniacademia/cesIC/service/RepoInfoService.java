@@ -14,5 +14,5 @@ public interface RepoInfoService {
 
 	List<RepoInfo> findAll();
 	
-	void exportar(RepoFDTO repoFDTO);
+//	void exportar(RepoFDTO repoFDTO);
 }

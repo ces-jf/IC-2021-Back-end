@@ -1,6 +1,5 @@
 package br.com.uniacademia.cesIC.service.implementation;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -75,14 +74,14 @@ public class RepoInfoServiceImplementation implements RepoInfoService {
 		return repositoryRepoInfo.findAll();
 	}
 
-	@Override
-	public void exportar(RepoFDTO repoFDTO) {
-		log.info("Start - RepoInfoServiceImplementation.exportar");
-
-		String path = "src/main/resources/csv/repo.csv";
-		this.exportService.exportarCSV(Arrays.asList(repoFDTO), path);
-
-		log.info("End - RepoInfoServiceImplementation.exportar");
-	}
+//	@Override
+//	public void exportar(RepoFDTO repoFDTO) {
+//		log.info("Start - RepoInfoServiceImplementation.exportar");
+//
+//		String path = "src/main/resources/csv/repo.csv";
+//		this.exportService.exportarCSV(Arrays.asList(repoFDTO), path);
+//
+//		log.info("End - RepoInfoServiceImplementation.exportar");
+//	}
 
 }

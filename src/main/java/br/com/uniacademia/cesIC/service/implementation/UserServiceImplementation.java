@@ -57,7 +57,7 @@ public class UserServiceImplementation implements UserService {
 	}
 
 	@Override
-	public User findByLogin(String login) {
+	public UserFDTO findByLogin(String login) {
 		log.info("Start - UserServiceImplementation.findByLogin - Login - {}", login);
 
 		Optional<User> userOPT = repositoryUser.findByLogin(login);
@@ -66,7 +66,7 @@ public class UserServiceImplementation implements UserService {
 		}
 
 		log.info("End - UserServiceImplementation.findByLogin ");
-		return userOPT.get();
+		return this.mapper.map(userOPT.get(), UserFDTO.class);
 	}
 
 	@Override
@@ -79,7 +79,7 @@ public class UserServiceImplementation implements UserService {
 		Optional<RepoInfo> repoInfo = this.repoEndPoint.buscarRepoInfo(userHDTO.getUser(), userHDTO.getRepo());
 		if (!repoInfo.isPresent())
 			throw new UserInfoNotFoundException();
-		
+
 		boolean buscarUsres = true;
 		int page = 1;
 		while (buscarUsres) {

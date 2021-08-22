@@ -45,7 +45,7 @@ public class ControllerUser {
 		log.info("Start - ControllerUser.buscarUsuario - User - {}", user);
 		
 		log.info("End - ControllerUser.buscarUsuario - User - {}", user);
-		return this.userInfooEndPoint.getUserInfoo(user);
+		return this.userServiceImp.findByLogin(user);
 		
 	}
 

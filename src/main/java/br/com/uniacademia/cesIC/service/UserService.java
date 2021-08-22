@@ -1,10 +1,6 @@
 package br.com.uniacademia.cesIC.service;
 
-import java.io.IOException;
 import java.util.List;
-
-import com.fasterxml.jackson.core.JsonGenerationException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 
 import br.com.uniacademia.cesIC.dto.user.UserFDTO;
 import br.com.uniacademia.cesIC.dto.user.UserHDTO;
@@ -18,7 +14,7 @@ public interface UserService {
 
 	List<User> findAll();
 
-	User findByLogin(String login) throws JsonGenerationException, JsonMappingException, IOException;
+	UserFDTO findByLogin(String login);
 
 	List<UserFDTO> buscarContributors(UserHDTO userHDTO);
 }
