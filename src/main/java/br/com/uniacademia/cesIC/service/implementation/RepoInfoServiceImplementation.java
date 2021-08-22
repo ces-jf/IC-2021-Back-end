@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import br.com.uniacademia.cesIC.dto.repo.RepoFDTO;
 import br.com.uniacademia.cesIC.dto.repo.RepoHDTO;
 import br.com.uniacademia.cesIC.endpoints.RepoEndPoint;
+import br.com.uniacademia.cesIC.endpoints.UserInfooEndPoint;
 import br.com.uniacademia.cesIC.exception.repo.notFound.RepoNotFoundException;
 import br.com.uniacademia.cesIC.models.RepoInfo;
 import br.com.uniacademia.cesIC.repositors.RepositoryRepoInfo;
@@ -27,6 +28,9 @@ public class RepoInfoServiceImplementation implements RepoInfoService {
 
 	@Autowired
 	RepoEndPoint repoEndPoint;
+
+	@Autowired
+	UserInfooEndPoint userInfooEndPoint;
 
 	@Autowired
 	ExportService exportService;
@@ -52,13 +56,15 @@ public class RepoInfoServiceImplementation implements RepoInfoService {
 	public RepoFDTO include(RepoHDTO repoHDTO) {
 		log.info("Start - RepoInfoServiceImplementation.include - Repositiry - {}", repoHDTO.getRepo());
 
-		RepoInfo repoInfo = this.repoEndPoint.buscarRepoInfo(repoHDTO.getUser(), repoHDTO.getRepo());
-		if (repoInfo != null) {
-			repositoryRepoInfo.save(repoInfo);
+		Optional<RepoInfo> repoInfo = this.repoEndPoint.buscarRepoInfo(repoHDTO.getUser(), repoHDTO.getRepo());
+		if (!repoInfo.isPresent()) {
+			throw new RepoNotFoundException();
 		}
+		repositoryRepoInfo.save(repoInfo.get());
+		RepoFDTO fdto = mapper.map(repoInfo.get(), RepoFDTO.class);
 
-		log.info("End - RepoInfoServiceImplementation.include - Repositiry - {}", repoHDTO.getRepo());
-		return mapper.map(repoInfo, RepoFDTO.class);
+		log.info("End - RepoInfoServiceImplementation.include - Repositiry - {}", fdto);
+		return fdto;
 	}
 
 	@Override
@@ -72,10 +78,10 @@ public class RepoInfoServiceImplementation implements RepoInfoService {
 	@Override
 	public void exportar(RepoFDTO repoFDTO) {
 		log.info("Start - RepoInfoServiceImplementation.exportar");
-		
+
 		String path = "src/main/resources/csv/repo.csv";
 		this.exportService.exportarCSV(Arrays.asList(repoFDTO), path);
-		
+
 		log.info("End - RepoInfoServiceImplementation.exportar");
 	}
 
