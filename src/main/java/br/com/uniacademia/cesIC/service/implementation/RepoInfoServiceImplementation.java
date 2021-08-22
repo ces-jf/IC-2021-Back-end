@@ -56,12 +56,17 @@ public class RepoInfoServiceImplementation implements RepoInfoService {
 	public RepoFDTO include(RepoHDTO repoHDTO) {
 		log.info("Start - RepoInfoServiceImplementation.include - Repositiry - {}", repoHDTO.getRepo());
 
-		Optional<RepoInfo> repoInfo = this.repoEndPoint.buscarRepoInfo(repoHDTO.getUser(), repoHDTO.getRepo());
-		if (!repoInfo.isPresent()) {
+		RepoFDTO fdto = new RepoFDTO();
+		try {
+			Optional<RepoInfo> repoInfo = this.repoEndPoint.buscarRepoInfo(repoHDTO.getUser(), repoHDTO.getRepo());
+			if (!repoInfo.isPresent()) {
+				throw new RepoNotFoundException();
+			}
+			repositoryRepoInfo.save(repoInfo.get());
+			fdto = mapper.map(repoInfo.get(), RepoFDTO.class);
+		} catch (Exception e) {
 			throw new RepoNotFoundException();
 		}
-		repositoryRepoInfo.save(repoInfo.get());
-		RepoFDTO fdto = mapper.map(repoInfo.get(), RepoFDTO.class);
 
 		log.info("End - RepoInfoServiceImplementation.include - Repositiry - {}", fdto);
 		return fdto;

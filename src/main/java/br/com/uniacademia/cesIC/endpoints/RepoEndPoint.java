@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -19,6 +20,7 @@ public interface RepoEndPoint {
 			@RequestParam("pages") int pages);
 
 	@GetMapping(produces = "application/json", value = "/{user}/{repo}")
+	@ExceptionHandler
 	Optional<RepoInfo> buscarRepoInfo(@RequestParam("user") String user, @RequestParam("repo") String repo);
 
 	@GetMapping(produces = "application/json", value = "/{user}/{repo}/tags?per_page=100&page={pages}")
