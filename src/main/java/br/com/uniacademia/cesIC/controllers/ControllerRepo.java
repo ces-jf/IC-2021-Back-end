@@ -6,6 +6,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,6 +28,7 @@ public class ControllerRepo {
 	@Autowired
 	RepoInfoService repoInfoService;
 
+	@CrossOrigin
 	@PostMapping
 	public ResponseEntity<RepoFDTO> include(@RequestBody @Valid RepoHDTO repoHDTO) {
 		log.info("Start - ControllerRepo.include - RepoHDTO - {}", repoHDTO);
@@ -37,6 +39,7 @@ public class ControllerRepo {
 		return ResponseEntity.ok(repoFDTO);
 	}
 
+	@CrossOrigin
 	@GetMapping(params = "repo")
 	public ResponseEntity<RepoFDTO> buscarPorRepository(@PathVariable String repo) {
 		log.info("Start - ControllerRepo.buscarPorRepository - Repo - {}", repo);
@@ -47,6 +50,7 @@ public class ControllerRepo {
 		return ResponseEntity.ok(repoFDTO);
 	}
 
+	@CrossOrigin
 	@GetMapping
 	public List<RepoInfo> buscarRepository() {
 		return this.repoInfoService.findAll();
