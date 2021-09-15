@@ -10,6 +10,7 @@ import javax.validation.constraints.Size;
 import org.apache.commons.lang3.builder.ToStringExclude;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
@@ -50,6 +51,7 @@ public class Authentication implements Serializable {
     private List<AuthenticationRole> role;
 
     @NotNull
+    @DBRef
     private User user;
 
 }

@@ -19,7 +19,7 @@ public class UserTokenHRDTO implements Serializable {
 	private static final long serialVersionUID = 3795494821890481093L;
 
 	@NotNull(message = "O campo 'Id' é obrigatório")
-	private Long id;
+	private String id;
 
 	@NotNull(message = "O campo 'Nome' é obrigatório")
 	@Size(min = 1, max = 200, message = "O campo 'Nome' deve conter entre 1 e 200 caracteres")
