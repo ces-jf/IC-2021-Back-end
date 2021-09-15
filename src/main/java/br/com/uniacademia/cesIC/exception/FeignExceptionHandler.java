@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import br.com.uniacademia.cesIC.exception.repo.notFound.RepoNotFoundException;
-import br.com.uniacademia.cesIC.exception.user.notFound.UserInfoNotFoundException;
-import br.com.uniacademia.cesIC.exception.userInfo.notFound.UserNotFoundException;
+import br.com.uniacademia.cesIC.exception.user.notFound.UserNotFoundException;
+import br.com.uniacademia.cesIC.exception.userInfo.notFound.UserInfoNotFoundException;
 
 @ControllerAdvice
 public class FeignExceptionHandler extends ResponseEntityExceptionHandler {

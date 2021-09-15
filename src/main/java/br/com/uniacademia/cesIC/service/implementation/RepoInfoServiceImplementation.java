@@ -22,57 +22,58 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class RepoInfoServiceImplementation implements RepoInfoService {
 
-	@Autowired
-	RepositoryRepoInfo repositoryRepoInfo;
+    @Autowired
+    RepositoryRepoInfo repositoryRepoInfo;
 
-	@Autowired
-	RepoEndPoint repoEndPoint;
+    @Autowired
+    RepoEndPoint repoEndPoint;
 
-	@Autowired
-	UserInfooEndPoint userInfooEndPoint;
+    @Autowired
+    UserInfooEndPoint userInfooEndPoint;
 
-	@Autowired
-	ExportService exportService;
+    @Autowired
+    ExportService exportService;
 
-	@Autowired
-	ModelMapper mapper;
+    @Autowired
+    ModelMapper mapper;
 
-	@Override
-	public RepoFDTO findByName(String name) {
-		log.info("Start - RepoInfoServiceImplementation.findByName - Name - {}", name);
+    @Override
+    public RepoFDTO findByName(String name) {
+	log.info("Start - RepoInfoServiceImplementation.findByName - Name - {}", name);
 
-		Optional<RepoInfo> optRepoInfo = repositoryRepoInfo.findByName(name);
-		if (!optRepoInfo.isPresent()) {
-			throw new RepoNotFoundException();
-		}
-		RepoFDTO repoFDTO = mapper.map(optRepoInfo.get(), RepoFDTO.class);
+	Optional<RepoInfo> optRepoInfo = repositoryRepoInfo.findByName(name);
+	if (!optRepoInfo.isPresent()) {
+	    throw new RepoNotFoundException();
+	}
+	RepoFDTO repoFDTO = mapper.map(optRepoInfo.get(), RepoFDTO.class);
 
-		log.info("Start - RepoInfoServiceImplementation.findByName - RepoFDTO - {}", repoFDTO);
-		return repoFDTO;
+	log.info("Start - RepoInfoServiceImplementation.findByName - RepoFDTO - {}", repoFDTO);
+	return repoFDTO;
+    }
+
+    @Override
+    public RepoFDTO include(RepoHDTO repoHDTO) {
+	log.info("Start - RepoInfoServiceImplementation.include - Repositiry - {}", repoHDTO.getRepo());
+
+	Optional<RepoInfo> repoInfo = this.repositoryRepoInfo.findByName(repoHDTO.getUser() + "/" + repoHDTO.getRepo());
+	if (!repoInfo.isPresent()) {
+	    throw new RepoNotFoundException();
 	}
 
-	@Override
-	public RepoFDTO include(RepoHDTO repoHDTO) {
-		log.info("Start - RepoInfoServiceImplementation.include - Repositiry - {}", repoHDTO.getRepo());
+	RepoInfo repo = this.repositoryRepoInfo.save(repoInfo.get());
+	RepoFDTO repoFDTO = this.mapper.map(repo, RepoFDTO.class);
 
-		Optional<RepoInfo> repoInfo = this.repoEndPoint.buscarRepoInfo(repoHDTO.getUser(), repoHDTO.getRepo());
-		if (!repoInfo.isPresent()) {
-			throw new RepoNotFoundException();
-		}
-		repositoryRepoInfo.save(repoInfo.get());
-		RepoFDTO fdto = mapper.map(repoInfo.get(), RepoFDTO.class);
+	log.info("End - RepoInfoServiceImplementation.include - Repositiry - {}", repoFDTO);
+	return repoFDTO;
+    }
 
-		log.info("End - RepoInfoServiceImplementation.include - Repositiry - {}", fdto);
-		return fdto;
-	}
+    @Override
+    public List<RepoInfo> findAll() {
+	log.info("Start - RepoInfoServiceImplementation.findAll");
 
-	@Override
-	public List<RepoInfo> findAll() {
-		log.info("Start - RepoInfoServiceImplementation.findAll");
-
-		log.info("End - RepoInfoServiceImplementation.findAll");
-		return repositoryRepoInfo.findAll();
-	}
+	log.info("End - RepoInfoServiceImplementation.findAll");
+	return repositoryRepoInfo.findAll();
+    }
 
 //	@Override
 //	public void exportar(RepoFDTO repoFDTO) {

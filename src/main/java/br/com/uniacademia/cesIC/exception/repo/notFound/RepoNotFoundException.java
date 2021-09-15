@@ -7,7 +7,7 @@ public class RepoNotFoundException extends RuntimeException {
 	private static final long serialVersionUID = 5818315815113777368L;
 	
 	public RepoNotFoundException() {
-		super(ErrorCode.REPO_NOT_FOUND.getMessage());
+		super(ErrorCode.FAMILY_NOT_FOUND.getMessage());
 	}
 
 }

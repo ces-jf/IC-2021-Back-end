@@ -1,6 +1,6 @@
 projectKey=cesIC
 serverUrl=http://localhost:9000
-serverVersion=9.0.0.45539
+serverVersion=9.0.1.46107
 dashboardUrl=http://localhost:9000/dashboard?id=cesIC
-ceTaskId=AXqM9oeXZUd51bX2O1s_
-ceTaskUrl=http://localhost:9000/api/ce/task?id=AXqM9oeXZUd51bX2O1s_
+ceTaskId=AXvp_hr4GZpWE0CYa7DP
+ceTaskUrl=http://localhost:9000/api/ce/task?id=AXvp_hr4GZpWE0CYa7DP

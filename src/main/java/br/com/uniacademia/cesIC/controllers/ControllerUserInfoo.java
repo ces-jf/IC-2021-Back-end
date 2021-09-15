@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.uniacademia.cesIC.dto.userInfoo.UserInfooDTO;
 import br.com.uniacademia.cesIC.dto.userInfoo.UserInfooHDTO;
 import br.com.uniacademia.cesIC.models.UserInfoo;
-import br.com.uniacademia.cesIC.service.UserService;
+import br.com.uniacademia.cesIC.service.UserRepoService;
 import br.com.uniacademia.cesIC.service.implementation.UserInfooServiceImplementation;
 import lombok.extern.slf4j.Slf4j;
 
@@ -30,8 +30,9 @@ public class ControllerUserInfoo {
 	UserInfooServiceImplementation userInfooService;
 
 	@Autowired
-	UserService userService;
+	UserRepoService userService;
 
+	@CrossOrigin
 	@PostMapping
 	public ResponseEntity<UserInfooDTO> include(@RequestBody @Valid UserInfooHDTO userInfooHDTO) {
 		log.info("Start - ControllerUserInfoo.include - UserInfooHDTO - {}", userInfooHDTO);
@@ -50,7 +51,8 @@ public class ControllerUserInfoo {
 		}
 	}
 
-	@GetMapping()
+	@CrossOrigin
+	@GetMapping
 	public ResponseEntity<List<UserInfoo>> buscarAll() {
 		List<UserInfoo> userInfos = userInfooService.findAll();
 		if (userInfos != null)

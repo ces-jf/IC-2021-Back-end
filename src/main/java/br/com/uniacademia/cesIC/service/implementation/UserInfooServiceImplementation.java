@@ -7,10 +7,10 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import br.com.uniacademia.cesIC.dto.user.UserFDTO;
 import br.com.uniacademia.cesIC.dto.userInfoo.UserInfooDTO;
+import br.com.uniacademia.cesIC.dto.userRepo.UserRepoFDTO;
 import br.com.uniacademia.cesIC.endpoints.UserInfooEndPoint;
-import br.com.uniacademia.cesIC.exception.user.notFound.UserInfoNotFoundException;
+import br.com.uniacademia.cesIC.exception.userInfo.notFound.UserInfoNotFoundException;
 import br.com.uniacademia.cesIC.models.UserInfoo;
 import br.com.uniacademia.cesIC.repositors.RepositoryUserInfoo;
 import br.com.uniacademia.cesIC.service.ExportService;
@@ -52,7 +52,7 @@ public class UserInfooServiceImplementation implements UserInfooService {
 	public UserInfooDTO buscarUserInfoGitHub(String login) {
 		log.info("Start - UserInfooServiceImplementation.buscarUserInfoGitHub - Login - {}", login);
 
-		UserFDTO userFDTO = this.userInfooEndPoint.getUserInfoo(login);
+		UserRepoFDTO userFDTO = this.userInfooEndPoint.getUserInfoo(login);
 		if (userFDTO.getLogin() == null)
 			throw new UserInfoNotFoundException();
 		
@@ -72,7 +72,7 @@ public class UserInfooServiceImplementation implements UserInfooService {
 		log.info("Start - UserInfooServiceImplementation.save - UserInfooDTO - {}", userInfooDTO);
 
 		if (userInfooDTO != null)
-			repositoryUserInfoo.save(mapper.map(userInfooDTO, UserInfoo.class));
+			this.repositoryUserInfoo.save(mapper.map(userInfooDTO, UserInfoo.class));
 		else
 			throw new UserInfoNotFoundException();
 

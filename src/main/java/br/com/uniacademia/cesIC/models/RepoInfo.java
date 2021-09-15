@@ -2,9 +2,6 @@ package br.com.uniacademia.cesIC.models;
 
 import java.io.Serializable;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,12 +11,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Document(collection = "repo")
 public class RepoInfo implements Serializable {
 
 	private static final long serialVersionUID = 6007022265994664598L;
 
-	@Id
 	private String id;
 	private String node_id;
 	private String name;
@@ -97,5 +92,5 @@ public class RepoInfo implements Serializable {
 	private Organization organization;
 	private Integer network_count;
 	private Integer subscribers_count;
-	
+
 }

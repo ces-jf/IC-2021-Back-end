@@ -18,9 +18,7 @@ import br.com.uniacademia.cesIC.models.GetTags;
 import br.com.uniacademia.cesIC.models.RepoInfo;
 import br.com.uniacademia.cesIC.repositors.RepositoryGetTags;
 import br.com.uniacademia.cesIC.service.GetTagsService;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Service
 public class GetTagsServiceImplementation implements GetTagsService {
 

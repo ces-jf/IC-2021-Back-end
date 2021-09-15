@@ -5,6 +5,7 @@ import java.io.Serializable;
 import br.com.uniacademia.cesIC.models.License;
 import br.com.uniacademia.cesIC.models.Organization;
 import br.com.uniacademia.cesIC.models.Owner;
+import br.com.uniacademia.cesIC.models.RepoInfo;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,6 +19,8 @@ public class RepoFDTO implements Serializable {
 
 	private static final long serialVersionUID = -513605695076146734L;
 
+	private String repositoryName;
+	private RepoInfo repo;
 	private String id;
 	private String node_id;
 	private String name;

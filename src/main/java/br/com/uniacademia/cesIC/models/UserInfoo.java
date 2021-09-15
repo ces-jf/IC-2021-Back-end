@@ -21,7 +21,6 @@ public class UserInfoo implements Serializable {
 
 	@Id
 	private String id;
-	
 	private String login;
 	private String node_id;
 	private String avatar_url;
