@@ -18,8 +18,8 @@ public class MongoConfig {
     }
 
     @Bean
-    public UserCascadeSaveMongoEventListener userCascadingMongoEventListener() {
-	return new UserCascadeSaveMongoEventListener();
+    public CascadeMongoEventListener userCascadingMongoEventListener() {
+	return new CascadeMongoEventListener();
     }
 
 }

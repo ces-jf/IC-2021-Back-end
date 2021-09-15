@@ -14,7 +14,9 @@ import br.com.uniacademia.cesIC.dto.authentication.AuthenticationFRDTO;
 import br.com.uniacademia.cesIC.dto.authentication.AuthenticationRPDTO;
 import br.com.uniacademia.cesIC.dto.user.UserPIDTO;
 import br.com.uniacademia.cesIC.models.Authentication;
+import br.com.uniacademia.cesIC.models.User;
 import br.com.uniacademia.cesIC.repositors.AuthenticationRepository;
+import br.com.uniacademia.cesIC.repositors.UserRepository;
 import br.com.uniacademia.cesIC.security.entity.JwtUser;
 import br.com.uniacademia.cesIC.service.AuthenticationService;
 import br.com.uniacademia.cesIC.service.processor.AuthenticationProcessor;
@@ -30,6 +32,9 @@ public class AuthenticationServiceImplementation implements AuthenticationServic
 
 	@Autowired
 	private AuthenticationProcessor authenticationProcessor;
+	
+	@Autowired
+	private UserRepository userRepository;
 
 	@Autowired
 	private AuthenticationRepository authenticationRepository;
@@ -68,10 +73,13 @@ public class AuthenticationServiceImplementation implements AuthenticationServic
 
 		String encodedPassword = Encryptor.encode(authentication.getPassword());
 		authentication.setPassword(encodedPassword);
-		
-		this.authenticationProcessor.alreadyExists(authentication.getEmail());
 
 		authentication = this.authenticationRepository.save(authentication);
+		
+		User user = userRepository.findByName(authentication.getUser().getName()).get();
+		user.setAuthentication(authentication);
+		
+		this.userRepository.save(user);
 
 		AuthenticationRPDTO authenticationRDTO = this.mapper.map(authentication, AuthenticationRPDTO.class);
 		authenticationRDTO.setPassword(userPIDTO.getAuthentication().getPassword());

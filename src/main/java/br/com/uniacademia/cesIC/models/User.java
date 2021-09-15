@@ -5,8 +5,10 @@ import java.io.Serializable;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import br.com.uniacademia.cesIC.config.Cascade;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -27,6 +29,8 @@ public class User implements Serializable {
     @NotNull
     private String name;
 
+    @DBRef
+    @Cascade
     private Authentication authentication;
 
 }
