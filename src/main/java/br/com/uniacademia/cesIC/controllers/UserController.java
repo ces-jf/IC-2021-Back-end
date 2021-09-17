@@ -45,6 +45,7 @@ public class UserController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(response);
 	}
 	
+	
 	@Secured("ADMINISTRATOR")
 	@PostMapping("/administrator")
 	public ResponseEntity<Response<TokenFRDTO>> includeAdministrator(@RequestBody @Valid UserPDTO userPDTO) {

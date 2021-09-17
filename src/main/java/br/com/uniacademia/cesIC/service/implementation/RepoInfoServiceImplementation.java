@@ -55,7 +55,7 @@ public class RepoInfoServiceImplementation implements RepoInfoService {
     public RepoFDTO include(RepoHDTO repoHDTO) {
 	log.info("Start - RepoInfoServiceImplementation.include - Repositiry - {}", repoHDTO.getRepo());
 
-	Optional<RepoInfo> repoInfo = this.repositoryRepoInfo.findByName(repoHDTO.getUser() + "/" + repoHDTO.getRepo());
+	Optional<RepoInfo> repoInfo = this.repoEndPoint.buscarRepoInfo(repoHDTO.getUser(), repoHDTO.getRepo());
 	if (!repoInfo.isPresent()) {
 	    throw new RepoNotFoundException();
 	}
@@ -70,9 +70,11 @@ public class RepoInfoServiceImplementation implements RepoInfoService {
     @Override
     public List<RepoInfo> findAll() {
 	log.info("Start - RepoInfoServiceImplementation.findAll");
-
+	
+	List<RepoInfo> repoInfos = repositoryRepoInfo.findAll();
+	
 	log.info("End - RepoInfoServiceImplementation.findAll");
-	return repositoryRepoInfo.findAll();
+	return repoInfos;
     }
 
 //	@Override

@@ -26,10 +26,8 @@ public enum ErrorCode {
 	// Not Found
 	USER_NOT_FOUND("O usuário solicitado não foi encontrado"),
 	DONATE_NOT_FOUND("A doação solicitada não foi encontrada"),
-	FAMILY_NOT_FOUND("A família solicitada não foi encontrada"),
-	CHARITY_NOT_FOUND("A entidade solicitada não foi encontrada"),
+	REPOINFO_NOT_FOUND("A repositorio solicitada não foi encontrada"),
 	FOOD_STAMP_NOT_FOUND("A cesta solicitada não foi encontrada"),
-	ADDRESS_NOT_FOUND("O endereço solicitado não foi encontrado"),
 	AUTHENTICATION_NOT_FOUND("A autenticação solicitada não foi encontrada"),
 	
 	// Not Changed
@@ -37,8 +35,6 @@ public enum ErrorCode {
 
 	// Already Exists
 	USER_ALREADY_EXISTS("O usuário solicitado já se encontra na nossa base de dados"),
-	FAMILY_ALREADY_EXISTS("A família solicitada já se encontra na nossa base de dados"),
-	CHARITY_ALREADY_EXISTS("A entidade solicitada já se encontra na nossa base de dados"),
 	AUTHENTICATION_ALREADY_EXISTS("A autenticação solicitada já se encontra na nossa base de dados");
 	
 	private final String message;
