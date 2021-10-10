@@ -37,7 +37,7 @@ public class UserInfooServiceImplementation implements UserInfooService {
 	public UserInfoo findByLogin(String login) {
 		Optional<UserInfoo> opt = repositoryUserInfoo.findByPorLogin(login);
 		if (!opt.isPresent()) {
-			log.error("Não tem foi encontrado - Login {}", login);
+			log.error("Não foi encontrado - Login {}", login);
 			return null;
 		}
 		return opt.get();

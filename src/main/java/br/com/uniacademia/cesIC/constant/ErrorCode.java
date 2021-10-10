@@ -25,9 +25,7 @@ public enum ErrorCode {
 
 	// Not Found
 	USER_NOT_FOUND("O usuário solicitado não foi encontrado"),
-	DONATE_NOT_FOUND("A doação solicitada não foi encontrada"),
 	REPOINFO_NOT_FOUND("A repositorio solicitada não foi encontrada"),
-	FOOD_STAMP_NOT_FOUND("A cesta solicitada não foi encontrada"),
 	AUTHENTICATION_NOT_FOUND("A autenticação solicitada não foi encontrada"),
 	
 	// Not Changed

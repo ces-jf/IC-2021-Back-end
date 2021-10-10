@@ -1,4 +1,4 @@
-package br.com.uniacademia.cesIC.config;
+package br.com.uniacademia.cesIC.config.mongo;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

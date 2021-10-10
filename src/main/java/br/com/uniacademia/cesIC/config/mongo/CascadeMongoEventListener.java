@@ -1,4 +1,4 @@
-package br.com.uniacademia.cesIC.config;
+package br.com.uniacademia.cesIC.config.mongo;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;

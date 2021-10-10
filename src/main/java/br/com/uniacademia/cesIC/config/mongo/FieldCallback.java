@@ -1,4 +1,4 @@
-package br.com.uniacademia.cesIC.config;
+package br.com.uniacademia.cesIC.config.mongo;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.util.ReflectionUtils;

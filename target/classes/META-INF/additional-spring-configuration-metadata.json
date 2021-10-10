@@ -1,0 +1,17 @@
+{"properties": [
+  {
+    "name": "client",
+    "type": "java.lang.String",
+    "description": "A description for 'client'"
+  },
+  {
+    "name": "port",
+    "type": "java.lang.String",
+    "description": "A description for 'port'"
+  },
+  {
+    "name": "client.port.baseUrl",
+    "type": "java.lang.String",
+    "description": "A description for 'client.port.baseUrl'"
+  }
+]}

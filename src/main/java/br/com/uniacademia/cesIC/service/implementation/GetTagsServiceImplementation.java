@@ -22,55 +22,54 @@ import br.com.uniacademia.cesIC.service.GetTagsService;
 @Service
 public class GetTagsServiceImplementation implements GetTagsService {
 
-	@Autowired
-	RepositoryGetTags repositoryGetTags;
+    @Autowired
+    RepositoryGetTags repositoryGetTags;
 
-	@Autowired
-	RepoEndPoint getTagsEndPoint;
+    @Autowired
+    RepoEndPoint getTagsEndPoint;
 
-	@Autowired
-	ModelMapper mapper;
+    @Autowired
+    ModelMapper mapper;
 
-	@Override
-	public List<GetTags> findAll() {
-		return repositoryGetTags.findAll();
+    @Override
+    public List<GetTags> findAll() {
+	return repositoryGetTags.findAll();
+    }
+
+    @Override
+    public Set<GetTagsFDTO> buscarTags(RepoHDTO repoHDTO) {
+
+	Optional<RepoInfo> repoInfo = this.getTagsEndPoint.buscarRepoInfo(repoHDTO.getUser(), repoHDTO.getRepo());
+	if (!repoInfo.isPresent()) {
+	    throw new RepoNotFoundException();
 	}
 
-	@Override
-	public Set<GetTagsFDTO> buscarTags(RepoHDTO repoHDTO) {
+	Set<GetTagsFDTO> tagsList = new HashSet<>();
+	tagsList.addAll(findAll().stream().map(tag -> mapper.map(tag, GetTagsFDTO.class)).collect(Collectors.toSet()));
+	boolean buscarUsres = true;
+	int page = 1;
+	while (buscarUsres) {
 
-		Optional<RepoInfo> repoInfo = this.getTagsEndPoint.buscarRepoInfo(repoHDTO.getUser(), repoHDTO.getRepo());
-		if (!repoInfo.isPresent()) {
-			throw new RepoNotFoundException();
-		}
+	    List<GetTagsFDTO> getTagsFDTOs = this.getTagsEndPoint.buscarTags(repoHDTO.getUser(), repoHDTO.getRepo(),
+		    page);
 
-		Set<GetTagsFDTO> tagsList = new HashSet<>();
-		tagsList.addAll(findAll().stream().map(tag -> mapper.map(tag, GetTagsFDTO.class)).collect(Collectors.toSet()));
-		boolean buscarUsres = true;
-		int page = 1;
-		while (buscarUsres) {
-
-			List<GetTagsFDTO> getTagsFDTOs = this.getTagsEndPoint.buscarTags(repoHDTO.getUser(), repoHDTO.getRepo(),
-					page);
-
-			if (getTagsFDTOs.isEmpty())
-				buscarUsres = false;
-			else
-				tagsList.addAll(getTagsFDTOs);
-			page++;
-		}
-		List<GetTags> getTags = tagsList.stream().map(tag -> mapper.map(tag, GetTags.class))
-				.collect(Collectors.toList());
-		saveAll(getTags);
-//		exportCSV(getTags);
-		return tagsList;
+	    if (getTagsFDTOs.isEmpty())
+		buscarUsres = false;
+	    else
+		tagsList.addAll(getTagsFDTOs);
+	    page++;
 	}
+	List<GetTags> getTags = tagsList.stream().map(tag -> mapper.map(tag, GetTags.class))
+		.collect(Collectors.toList());
+	saveAll(getTags);
+	return tagsList;
+    }
 
-	@Override
-	public void saveAll(List<GetTags> tags) {
-		repositoryGetTags.saveAll(tags);
+    @Override
+    public void saveAll(List<GetTags> tags) {
+	repositoryGetTags.saveAll(tags);
 
-	}
+    }
 
 //	private void exportCSV(List<GetTags> tags) {
 //		try {

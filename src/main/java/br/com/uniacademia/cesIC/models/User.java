@@ -8,7 +8,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import br.com.uniacademia.cesIC.config.Cascade;
+import br.com.uniacademia.cesIC.config.mongo.Cascade;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

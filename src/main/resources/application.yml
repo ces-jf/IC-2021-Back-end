@@ -1,0 +1,14 @@
+client: 
+  port:    baseUrl: https://api.github.com
+
+# EhCache
+spring:  cache:    jcache:      config: classpath:encache.xml  cloud:    config:      enabled: false
+    
+#Feign
+feign:
+  client:    config:
+      feignName:
+        connect-timeout: 5000
+        read-timeout: 5000
+        logger-level: basic
+        decode404: true        

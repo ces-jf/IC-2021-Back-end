@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Document(collection = "user")
+@Document(collection = "userRepo")
 public class UserRepo implements Serializable {
 
 	private static final long serialVersionUID = 1436691681116742535L;

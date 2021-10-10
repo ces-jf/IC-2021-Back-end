@@ -5,6 +5,8 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,31 +28,33 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping(value = "/userRepo")
 public class ControllerUserRepo {
 
-	@Autowired
-	UserRepoService userServiceImp;
+    @Autowired
+    UserRepoService userServiceImp;
 
-	@Autowired
-	UserInfooEndPoint userInfooEndPoint;
+    @Autowired
+    UserInfooEndPoint userInfooEndPoint;
 
-	@CrossOrigin
-	@PostMapping
-	public ResponseEntity<List<UserRepoFDTO>> include(@RequestBody @Valid UserRepoHDTO userHDTO) {
-		log.info("Start ControllerUserRepo.buscarUser - UserRepo - {}", userHDTO.getUser());
+    @CrossOrigin
+    @CacheEvict(value = "userRepo", allEntries = true)
+    @PostMapping
+    public ResponseEntity<List<UserRepoFDTO>> include(@RequestBody @Valid UserRepoHDTO userHDTO) {
+	log.info("Start ControllerUserRepo.buscarUser - UserRepo - {}", userHDTO.getUser());
 
-		List<UserRepoFDTO> userFDTOs = userServiceImp.buscarContributors(userHDTO);
+	List<UserRepoFDTO> userFDTOs = userServiceImp.buscarContributors(userHDTO);
 
-		log.info("End - ControllerUserRepo.buscarUser - UserRepoHDTO - UserRepo - {}", userHDTO.getUser());
-		return ResponseEntity.ok(userFDTOs);
-	}
-	
-	@CrossOrigin
-	@GetMapping(params = "user")
-	public UserRepoFDTO buscarUsuario(@RequestParam String user) {
-		log.info("Start - ControllerUserRepo.buscarUsuario - UserRepo - {}", user);
-		
-		log.info("End - ControllerUserRepo.buscarUsuario - UserRepo - {}", user);
-		return this.userServiceImp.findByLogin(user);
-		
-	}
+	log.info("End - ControllerUserRepo.buscarUser - UserRepoHDTO - UserRepo - {}", userHDTO.getUser());
+	return ResponseEntity.ok(userFDTOs);
+    }
+
+    @CrossOrigin
+    @Cacheable("userRepo")
+    @GetMapping(params = "user")
+    public UserRepoFDTO buscarUsuario(@RequestParam String user) {
+	log.info("Start - ControllerUserRepo.buscarUsuario - UserRepo - {}", user);
+
+	log.info("End - ControllerUserRepo.buscarUsuario - UserRepo - {}", user);
+	return this.userServiceImp.findByLogin(user);
+
+    }
 
 }

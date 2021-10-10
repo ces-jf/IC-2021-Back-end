@@ -22,7 +22,7 @@ public class SwaggerConfig {
 	final String VERSION = "0.1";
 	final String LICENSE_URL = "";
 	final String TERMS_OF_SERVICE_URL = "";
-	final String TITLE = "Radar Social";
+	final String TITLE = "Uniacademia IC2021";
 	final String DESCRIPTION = "Serviço - User";
 	final Contact CONTRACT = new Contact(TITLE, EMAIL, WEB_PAGE);
 

@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Document(collection = "userInfoo")
+@Document(collection = "userInfo")
 public class UserInfoo implements Serializable {
 
 	private static final long serialVersionUID = 4538868431426785692L;
