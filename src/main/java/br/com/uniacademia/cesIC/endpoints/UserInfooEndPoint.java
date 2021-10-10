@@ -9,7 +9,7 @@ import br.com.uniacademia.cesIC.dto.userRepo.UserRepoFDTO;
 @FeignClient(value = "user", url = "${client.port.baseUrl}", decode404 = true)
 public interface UserInfooEndPoint {
 
-	@GetMapping(produces = "application/json", value = "/uesers/{user}")
+	@GetMapping(produces = "application/json", value = "/users/{user}")
 	UserRepoFDTO getUserInfoo(@RequestParam("user") String user);
 	
 }
