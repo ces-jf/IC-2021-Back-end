@@ -1,6 +1,7 @@
 package br.com.uniacademia.cesIC.models;
 
 import java.io.Serializable;
+import java.util.List;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -95,5 +96,6 @@ public class RepoInfo implements Serializable {
 	private Organization organization;
 	private Integer network_count;
 	private Integer subscribers_count;
+	private List<Contributor> contributors;
 
 }

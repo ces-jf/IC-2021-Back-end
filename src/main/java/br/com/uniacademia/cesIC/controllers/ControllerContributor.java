@@ -28,11 +28,11 @@ public class ControllerContributor {
     public ResponseEntity<List<Contributor>> includ(@RequestBody @Valid RepoHDTO repoHDTO) {
 	log.info("Start - ControllerContributor.include - Repository - {}", repoHDTO);
 
-	List<Contributor> contributors = this.contributoService.include(repoHDTO);
+//	List<Contributor> contributors = this.contributoService.include(repoHDTO);
 
 	log.info("End - ControllerContributor.include - Cotributors - {}");
 
-	return ResponseEntity.ok(contributors);
+	return ResponseEntity.ok(null);
     }
 
 }

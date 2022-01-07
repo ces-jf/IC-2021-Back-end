@@ -1,15 +1,19 @@
 package br.com.uniacademia.cesIC.service.implementation;
 
-import java.util.ArrayList;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import br.com.uniacademia.cesIC.dto.repo.RepoHDTO;
-import br.com.uniacademia.cesIC.dto.userInfoo.CommitFDTO;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
+import br.com.uniacademia.cesIC.dto.userInfoo.CommitDTO;
 import br.com.uniacademia.cesIC.endpoints.ContributorEndPoint;
+import br.com.uniacademia.cesIC.models.Commit;
 import br.com.uniacademia.cesIC.models.Contributor;
 import br.com.uniacademia.cesIC.repositors.RepositoryContributor;
 import br.com.uniacademia.cesIC.service.ContributoService;
@@ -29,31 +33,31 @@ public class ContributorServiceImplementation implements ContributoService {
     ModelMapper mapper;
 
     @Override
-    public List<Contributor> include(RepoHDTO repoHDTO) {
-	log.info("Start - ContributorServiceImplementation.include - Repositiry - {}", repoHDTO);
+    public List<Contributor> include(List<Contributor> contributors) {
+	log.info("Start - ContributorServiceImplementation.include - Repository - {}", contributors);
 
-	List<Contributor> contributors = new ArrayList<>();
-
-//	int page = 1;
-//	do {
-//	    contributors.addAll(this.contributorEndPoint.buscarContributor(page));
-//	    page++;
-//	} while (!this.contributorEndPoint.buscarContributor(page).isEmpty());
-//
-//
-//	contributors.stream()
-//		.forEach(contributo -> contributo.setNameRepository(repoHDTO.getUser() + "/" + repoHDTO.getRepo()));
-
-	List<CommitFDTO> commitFDTOs = new ArrayList<>();
 	int pag = 1;
-	do {
-	    commitFDTOs.addAll(this.contributorEndPoint.buscarCommits(pag));
-	    pag++;
-	} while (!this.contributorEndPoint.buscarCommits(pag).isEmpty());
+	List<ObjectNode> json = Arrays.asList();
+	List<Commit> commits = Arrays.asList();
 
-	commitFDTOs.stream().forEach(System.out::println);
+	for (Contributor contributor : contributors) {
+	    do {
+		json.addAll(this.contributorEndPoint.findCommits(pag, contributor.getLogin()));
+	    } while (!this.contributorEndPoint.findCommits(pag++, contributor.getLogin()).isEmpty());
+	    pag = 0;
 
-	log.info("End - RepoInfoServiceImplementation.include - Repositiry - {}");
+	    for (ObjectNode obj : json) {
+		CommitDTO commit = new CommitDTO();
+		String date = obj.path("commit").path("author").path("date").asText();
+
+		commit.setDate(LocalDate.parse(date, DateTimeFormatter.ISO_DATE_TIME));
+
+		commits.add(this.mapper.map(commit, Commit.class));
+	    }
+	    contributor.setListCommits(commits);
+	}
+
+	log.info("End - RepoInfoServiceImplementation.include - Repository - {}");
 	return contributors;
     }
 }

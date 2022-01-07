@@ -7,11 +7,9 @@ import br.com.uniacademia.cesIC.models.UserInfoo;
 
 public interface UserInfooService {
 
-	UserInfoo findByLogin(String login);
-	
-	void save(UserInfooDTO userInfooDTO);
+    void save(UserInfooDTO userInfooDTO);
 
-	List<UserInfoo> findAll() ;
+    List<UserInfoo> findAll();
 
-	UserInfooDTO buscarUserInfoGitHub(String login);
+    UserInfooDTO buscarUserInfoGitHub(String login);
 }

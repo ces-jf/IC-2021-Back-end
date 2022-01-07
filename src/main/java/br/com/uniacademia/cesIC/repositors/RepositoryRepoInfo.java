@@ -11,6 +11,9 @@ import br.com.uniacademia.cesIC.models.RepoInfo;
 @Repository
 public interface RepositoryRepoInfo extends MongoRepository<RepoInfo, String> {
 
-	@Query("{'name':?0}")
-	public Optional<RepoInfo> findByName(String nome);
+    @Query("{'name':?0}")
+    public Optional<RepoInfo> findByName(String nome);
+
+    @Query("{'full_name':?0}")
+    public Optional<RepoInfo> findByFullName(String user);
 }

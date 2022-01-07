@@ -35,8 +35,8 @@ public class ControllerUserRepo {
     UserInfooEndPoint userInfooEndPoint;
 
     @CrossOrigin
-    @CacheEvict(value = "userRepo", allEntries = true)
     @PostMapping
+    @CacheEvict(value = "userRepo", allEntries = true)
     public ResponseEntity<List<UserRepoFDTO>> include(@RequestBody @Valid UserRepoHDTO userHDTO) {
 	log.info("Start ControllerUserRepo.buscarUser - UserRepo - {}", userHDTO.getUser());
 
@@ -54,7 +54,15 @@ public class ControllerUserRepo {
 
 	log.info("End - ControllerUserRepo.buscarUsuario - UserRepo - {}", user);
 	return this.userServiceImp.findByLogin(user);
+    }
 
+    public ResponseEntity<List<UserRepoFDTO>> findAll() {
+	log.info("Start - ControllerUserRepo.findAll - UserRepo");
+	
+	List<UserRepoFDTO> userRepoFDTOs = this.userServiceImp.findAll();
+	
+	log.info("End - ControllerUserRepo.findAll - UserRepo");
+	return ResponseEntity.ok(userRepoFDTOs);
     }
 
 }

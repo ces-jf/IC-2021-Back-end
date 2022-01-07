@@ -39,7 +39,7 @@ public class GetTagsServiceImplementation implements GetTagsService {
     @Override
     public Set<GetTagsFDTO> buscarTags(RepoHDTO repoHDTO) {
 
-	Optional<RepoInfo> repoInfo = this.getTagsEndPoint.buscarRepoInfo(repoHDTO.getUser(), repoHDTO.getRepo());
+	Optional<RepoInfo> repoInfo = this.getTagsEndPoint.findRepoInfo(repoHDTO.getUser(), repoHDTO.getRepo());
 	if (!repoInfo.isPresent()) {
 	    throw new RepoNotFoundException();
 	}

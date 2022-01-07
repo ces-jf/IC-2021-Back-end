@@ -12,7 +12,7 @@ public interface UserRepoService {
 
 	void saveAll(List<UserRepo> userList);
 
-	List<UserRepo> findAll();
+	List<UserRepoFDTO> findAll();
 
 	UserRepoFDTO findByLogin(String login);
 

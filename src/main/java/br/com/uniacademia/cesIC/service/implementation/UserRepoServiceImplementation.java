@@ -25,88 +25,93 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class UserRepoServiceImplementation implements UserRepoService {
 
-	@Autowired
-	RepositoryUserRepo repositoryUser;
+    @Autowired
+    RepositoryUserRepo repositoryUser;
 
-	@Autowired
-	ModelMapper mapper;
+    @Autowired
+    ModelMapper mapper;
 
-	@Autowired
-	RepoEndPoint repoEndPoint;
+    @Autowired
+    RepoEndPoint repoEndPoint;
 
-	@Autowired
-	ExportService exportService;
+    @Autowired
+    ExportService exportService;
 
-	@Override
-	public void save(UserRepo user) {
-		log.info("Start - UserRepoServiceImplementation.save");
+    @Override
+    public void save(UserRepo user) {
+	log.info("Start - UserRepoServiceImplementation.save");
 
-		if (user == null)
-			throw new UserInfoNotFoundException();
-		repositoryUser.save(user);
+	if (user == null)
+	    throw new UserInfoNotFoundException();
+	repositoryUser.save(user);
 
-		log.info("End - UserRepoServiceImplementation.save");
+	log.info("End - UserRepoServiceImplementation.save");
+    }
+
+    @Override
+    public List<UserRepoFDTO> findAll() {
+	log.info("Start - UserRepoServiceImplementation.findAll");
+	List<UserRepo> userRepos = repositoryUser.findAll();
+	if (userRepos.isEmpty())
+	    throw new UserInfoNotFoundException();
+	List<UserRepoFDTO> userRepoFDTOs = userRepos.stream()
+		.map(userRpo -> this.mapper.map(userRepos, UserRepoFDTO.class)).collect(Collectors.toList());
+	log.info("End - UserRepoServiceImplementation.findAll");
+	return userRepoFDTOs;
+    }
+
+    @Override
+    public UserRepoFDTO findByLogin(String login) {
+	log.info("Start - UserRepoServiceImplementation.findByLogin - Login - {}", login);
+
+	Optional<UserRepo> userOPT = repositoryUser.findByLogin(login);
+	if (!userOPT.isPresent()) {
+	    throw new UserInfoNotFoundException();
 	}
 
-	@Override
-	public List<UserRepo> findAll() {
-		log.info("Start - UserRepoServiceImplementation.findAll");
+	log.info("End - UserRepoServiceImplementation.findByLogin ");
+	return this.mapper.map(userOPT.get(), UserRepoFDTO.class);
+    }
 
-		log.info("End - UserRepoServiceImplementation.findAll");
-		return repositoryUser.findAll();
+    @Override
+    public List<UserRepoFDTO> buscarContributors(UserRepoHDTO userHDTO) {
+	log.info("Start - UserRepoServiceImplementation.buscarContributors - UserRepoHDTO - {}", userHDTO);
+	Set<UserRepoFDTO> userList = new HashSet<>();
+
+	userList.addAll(findAll());
+
+	Optional<RepoInfo> repoInfo = this.repoEndPoint.findRepoInfo(userHDTO.getUser(), userHDTO.getRepo());
+	if (!repoInfo.isPresent())
+	    throw new UserInfoNotFoundException();
+
+	boolean buscarUsres = true;
+	int page = 1;
+	while (buscarUsres) {
+
+	    List<UserRepo> users = this.repoEndPoint.buscarUsers(userHDTO.getUser(), userHDTO.getRepo(), page);
+	    if (users.isEmpty())
+		buscarUsres = false;
+	    else
+		userList.addAll(users.stream().map(user -> this.mapper.map(user, UserRepoFDTO.class))
+			.collect(Collectors.toList()));
+	    page++;
 	}
 
-	@Override
-	public UserRepoFDTO findByLogin(String login) {
-		log.info("Start - UserRepoServiceImplementation.findByLogin - Login - {}", login);
+	saveAll(userList.stream().map(user -> this.mapper.map(user, UserRepo.class)).collect(Collectors.toList()));
+	this.exportService.exportarCSV(userList.stream().collect(Collectors.toList()),
+		"src/main/resources/csv/user.csv");
 
-		Optional<UserRepo> userOPT = repositoryUser.findByLogin(login);
-		if (!userOPT.isPresent()) {
-			throw new UserInfoNotFoundException();
-		}
+	log.info("End - UserRepoServiceImplementation.buscarContributors -  UserRepoFDTO");
+	return userList.stream().map(user -> mapper.map(user, UserRepoFDTO.class)).collect(Collectors.toList());
+    }
 
-		log.info("End - UserRepoServiceImplementation.findByLogin ");
-		return this.mapper.map(userOPT.get(), UserRepoFDTO.class);
-	}
+    @Override
+    public void saveAll(List<UserRepo> userList) {
+	log.info("Start - UserRepoServiceImplementation.saveAll");
 
-	@Override
-	public List<UserRepoFDTO> buscarContributors(UserRepoHDTO userHDTO) {
-		log.info("Start - UserRepoServiceImplementation.buscarContributors - UserRepoHDTO - {}", userHDTO);
-		Set<UserRepo> userList = new HashSet<>();
+	repositoryUser.saveAll(userList);
 
-		userList.addAll(findAll());
-
-		Optional<RepoInfo> repoInfo = this.repoEndPoint.buscarRepoInfo(userHDTO.getUser(), userHDTO.getRepo());
-		if (!repoInfo.isPresent())
-			throw new UserInfoNotFoundException();
-
-		boolean buscarUsres = true;
-		int page = 1;
-		while (buscarUsres) {
-
-			List<UserRepo> users = this.repoEndPoint.buscarUsers(userHDTO.getUser(), userHDTO.getRepo(), page);
-			if (users.isEmpty())
-				buscarUsres = false;
-			else
-				userList.addAll(users);
-			page++;
-		}
-
-		saveAll(userList.stream().collect(Collectors.toList()));
-		this.exportService.exportarCSV(userList.stream().collect(Collectors.toList()),
-				"src/main/resources/csv/user.csv");
-
-		log.info("End - UserRepoServiceImplementation.buscarContributors -  UserRepoFDTO");
-		return userList.stream().map(user -> mapper.map(user, UserRepoFDTO.class)).collect(Collectors.toList());
-	}
-
-	@Override
-	public void saveAll(List<UserRepo> userList) {
-		log.info("Start - UserRepoServiceImplementation.saveAll");
-
-		repositoryUser.saveAll(userList);
-
-		log.info("End - UserRepoServiceImplementation.saveAll");
-	}
+	log.info("End - UserRepoServiceImplementation.saveAll");
+    }
 
 }

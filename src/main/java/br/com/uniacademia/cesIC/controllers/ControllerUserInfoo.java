@@ -55,12 +55,14 @@ public class ControllerUserInfoo {
     }
 
     @CrossOrigin
-    @Cacheable("userInfo")
     @GetMapping
+    @Cacheable("userInfo")
     public ResponseEntity<List<UserInfoo>> buscarAll() {
+	log.info("Start - ControllerUserInfoo.buscarAll");
+
 	List<UserInfoo> userInfos = userInfooService.findAll();
-	if (userInfos != null)
-	    return ResponseEntity.ok(userInfos);
-	return ResponseEntity.badRequest().build();
+
+	log.info("End - ControllerUserInfoo.buscarAll");
+	return ResponseEntity.ok(userInfos);
     }
 }

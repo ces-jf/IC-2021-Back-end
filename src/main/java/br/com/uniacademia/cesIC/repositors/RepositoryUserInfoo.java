@@ -12,6 +12,6 @@ import br.com.uniacademia.cesIC.models.UserInfoo;
 public interface RepositoryUserInfoo extends MongoRepository<UserInfoo, String>{
 	
 	@Query("{'login':?0}")
-	public Optional<UserInfoo> findByPorLogin(String login);
+	public Optional<UserInfoo> findByLogin(String login);
 
 }

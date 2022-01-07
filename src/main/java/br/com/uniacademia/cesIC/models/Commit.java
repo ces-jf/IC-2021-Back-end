@@ -1,6 +1,7 @@
 package br.com.uniacademia.cesIC.models;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,14 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Commit implements Serializable {
 
-	private static final long serialVersionUID = 2975939668465056463L;
+    private static final long serialVersionUID = 2975939668465056463L;
 
-	private String sha;
-	private String url;
-
-	@Override
-	public String toString() {
-		return "Commit [sha=" + sha + ", url=" + url + "]";
-	}
-
+    private LocalDate date;
 }

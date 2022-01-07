@@ -1,6 +1,7 @@
 package br.com.uniacademia.cesIC.models;
 
 import java.io.Serializable;
+import java.util.Collection;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -27,5 +28,10 @@ public class Contributor implements Serializable {
     @Field(name = "name_contributor")
     private String login;
 
+    @Field(name = "number_contributions")
+    private Integer contributions;
+    
+    @Field(name = "commits")
+    private Collection<Commit> listCommits;
 
 }

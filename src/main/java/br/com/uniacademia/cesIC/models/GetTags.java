@@ -15,23 +15,17 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Document(collection = "getTags")
-public class GetTags implements Serializable{
-	 
-	private static final long serialVersionUID = -8148900287430556356L;
+public class GetTags implements Serializable {
 
-	@Id
-	private String id;
-	
-	private String name;
-	private String zipball_url;
-	private String tarball_url;
-	private Commit commit;
-	private String node_id;
-	
-	@Override
-	public String toString() {
-		return "GetTags [id=" + id + ", name=" + name + ", zipball_url=" + zipball_url + ", tarball_url=" + tarball_url
-				+ commit.toString() + ", node_id=" + node_id + "]";
-	}
-	
+    private static final long serialVersionUID = -8148900287430556356L;
+
+    @Id
+    private String id;
+
+    private String name;
+    private String zipball_url;
+    private String tarball_url;
+    private Commit commit;
+    private String node_id;
+
 }

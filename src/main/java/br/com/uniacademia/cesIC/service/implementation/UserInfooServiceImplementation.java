@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.uniacademia.cesIC.dto.userInfoo.UserInfooDTO;
-import br.com.uniacademia.cesIC.dto.userRepo.UserRepoFDTO;
 import br.com.uniacademia.cesIC.endpoints.UserInfooEndPoint;
 import br.com.uniacademia.cesIC.exception.userInfo.notFound.UserInfoNotFoundException;
 import br.com.uniacademia.cesIC.models.UserInfoo;
@@ -21,67 +20,63 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class UserInfooServiceImplementation implements UserInfooService {
 
-	@Autowired
-	RepositoryUserInfoo repositoryUserInfoo;
+    @Autowired
+    RepositoryUserInfoo repositoryUserInfoo;
 
-	@Autowired
-	UserInfooEndPoint userInfooEndPoint;
+    @Autowired
+    UserInfooEndPoint userInfooEndPoint;
 
-	@Autowired
-	ExportService exportService;
+    @Autowired
+    ExportService exportService;
 
-	@Autowired(required = true)
-	ModelMapper mapper;
+    @Autowired(required = true)
+    ModelMapper mapper;
 
-	@Override
-	public UserInfoo findByLogin(String login) {
-		Optional<UserInfoo> opt = repositoryUserInfoo.findByPorLogin(login);
-		if (!opt.isPresent()) {
-			log.error("Não foi encontrado - Login {}", login);
-			return null;
-		}
-		return opt.get();
+    @Override
+    public List<UserInfoo> findAll() {
+	log.info("Start - UserInfooServiceImplementation.findAll");
+
+	List<UserInfoo> userInfoos = repositoryUserInfoo.findAll();
+	if (userInfoos.isEmpty())
+	    throw new UserInfoNotFoundException();
+
+	log.info("End - UserInfooServiceImplementation.findAll");
+	return userInfoos;
+    }
+
+    @Override
+    public UserInfooDTO buscarUserInfoGitHub(String login) {
+	log.info("Start - UserInfooServiceImplementation.buscarUserInfoGitHub - Login - {}", login);
+
+	Optional<UserInfoo> userInfoOpt = this.repositoryUserInfoo.findByLogin(login);
+	if (userInfoOpt.isEmpty()) {
+	    UserInfoo userInfo = this.mapper.map(this.userInfooEndPoint.getUserInfoo(login), UserInfoo.class);
+	    if (userInfo.getLogin() == null)
+		throw new UserInfoNotFoundException();
+	    save(this.mapper.map(userInfo, UserInfooDTO.class));
 	}
 
-	@Override
-	public List<UserInfoo> findAll() {
-		return repositoryUserInfoo.findAll();
-	}
+	UserInfooDTO userDto = this.mapper.map(userInfoOpt.get(), UserInfooDTO.class);
 
-	@Override
-	public UserInfooDTO buscarUserInfoGitHub(String login) {
-		log.info("Start - UserInfooServiceImplementation.buscarUserInfoGitHub - Login - {}", login);
+	log.info("End - UserInfooServiceImplementation.buscarUserInfoGitHub - UserDTO - {}", userDto);
+	return userDto;
+    }
 
-		UserRepoFDTO userFDTO = this.userInfooEndPoint.getUserInfoo(login);
-		if (userFDTO.getLogin() == null)
-			throw new UserInfoNotFoundException();
-		
-		UserInfooDTO userDto = mapper.map(userFDTO, UserInfooDTO.class);
-		if (userDto == null) {
-			log.error("Não tem foi encontrado - Login {}", login);
-			throw new UserInfoNotFoundException();
-		}
-		save(userDto);
+    @Override
+    public void save(UserInfooDTO userInfooDTO) {
+	log.info("Start - UserInfooServiceImplementation.save - UserInfooDTO - {}", userInfooDTO);
 
-		log.info("End - UserInfooServiceImplementation.buscarUserInfoGitHub - UserDTO - {}", userDto);
-		return userDto;
-	}
+	if (userInfooDTO != null)
+	    this.repositoryUserInfoo.save(mapper.map(userInfooDTO, UserInfoo.class));
+	else
+	    throw new UserInfoNotFoundException();
 
-	@Override
-	public void save(UserInfooDTO userInfooDTO) {
-		log.info("Start - UserInfooServiceImplementation.save - UserInfooDTO - {}", userInfooDTO);
+	log.info("End - UserInfooServiceImplementation.save - UserInfooDTO - {}", userInfooDTO);
+    }
 
-		if (userInfooDTO != null)
-			this.repositoryUserInfoo.save(mapper.map(userInfooDTO, UserInfoo.class));
-		else
-			throw new UserInfoNotFoundException();
+    public void exportCSV(List<UserInfoo> params) {
+	String path = "src/main/resources/csv/userInfos.csv";
+	exportService.exportarCSV(params, path);
 
-		log.info("End - UserInfooServiceImplementation.save - UserInfooDTO - {}", userInfooDTO);
-	}
-
-	public void exportCSV(List<UserInfoo> params) {
-		String path = "src/main/resources/csv/userInfos.csv";
-		exportService.exportarCSV(params, path);
-
-	}
+    }
 }

@@ -12,7 +12,7 @@ public class MongoConfig {
     public @Bean MongoClient mongoClient() {
 
 	MongoClient mongoClient = MongoClients.create(
-		"mongodb+srv://root:t1f1A*bo80@gerenciador-api.gvhvz.mongodb.net/ces-ic?retryWrites=true&w=majority");
+		"mongodb+srv://root:<password>@gerenciador-api.gvhvz.mongodb.net/ces-ic?retryWrites=true&w=majority");
 
 	return mongoClient;
     }
